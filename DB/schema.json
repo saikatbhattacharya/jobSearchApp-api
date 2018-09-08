@@ -1,0 +1,11 @@
+{
+    "jobs":{
+        "title":"String",
+        "companyName":"String",
+        "location": "String",
+        "payRate": "Number",
+        "jobDesc": "String",
+        "replyRate": "Number",
+        "tags": ["String"]
+    }
+}
