@@ -9,14 +9,23 @@ const router = (app) => {
     });
     app.get('/jobs', (req, res) => {
         let { skills, availability, jobType, payRate } = req.query;
-        let tags = [];
+        let queryCond = {};
         if (skills) {
-            tags = skills.split(',').map(each => new RegExp(each, "i"))
+            const tags = skills.split(',').map(each => new RegExp(each, "i"));
+            queryCond.tags = {"$in": tags};
         }
-        if(availability) availability = new RegExp(availability, "i")
-        if(jobType) jobType = new RegExp(jobType, "i")
-        controller.readController.readData('jobModel', {tags: {"$in": tags}, availability, jobType}, res);
+        if(availability) {
+            queryCond.availability = new RegExp(availability, "i");
+        }
+        if(jobType) {
+            queryCond.jobType = new RegExp(jobType, "i");
+        }
+        controller.readController.readData('jobModel', queryCond, res);
     });
+    app.get('/jobs/search', (req, res) => {
+        let { searchText } = req.query;
+        controller.readController.searchData('jobModel', searchText, res);
+    })
 }
 
 export default router;
