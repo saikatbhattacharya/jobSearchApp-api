@@ -15,10 +15,14 @@ const router = (app) => {
             queryCond.tags = {"$in": tags};
         }
         if(availability) {
-            queryCond.availability = new RegExp(availability, "i");
+            const availabilities = availability.split(',').map(each => new RegExp(each, "i"));
+            queryCond.availability = {"$in": availabilities};
         }
         if(jobType) {
             queryCond.jobType = new RegExp(jobType, "i");
+        }
+        if(payRate) {
+            queryCond.payRate = { $gte: payRate.split(',')[0], $lte: payRate.split(',')[1]}
         }
         controller.readController.readData('jobModel', queryCond, res);
     });
